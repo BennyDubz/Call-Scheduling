@@ -30,7 +30,7 @@ if __name__ == "__main__":
     schedule = call_prob.solve_for_call_schedule()
     if schedule:
         call_prob.write_out_solution(schedule, output_filepath)
-        weekdays, weekends, holidays = call_prob.get_doc_days_assigned(call_prob)
+        weekdays, weekends, holidays = call_prob.get_doc_days_assigned(schedule)
         print("Schedule created. Below are the number of weekdays, weekends, and holidays assigned to each doctor:")
         print("Weekday totals:", weekdays)
         print("Weekend totals:", weekends)

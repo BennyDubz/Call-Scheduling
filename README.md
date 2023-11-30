@@ -35,9 +35,14 @@ python create_python.py start_date end_date input_filepath output_filepath
 
 Where the `start_date` and `end_date` are in `mm/dd/yyyy` format.
 
+Example:
+```commandline
+python create_schedule.py 1/15/2024 1/15/2025 ./testing/definedWeekdays ./results/definedWeekdays_results
+```
+
 ### File formatting
 
-The input file must be specifically formatted in order to create a specific call schedule for your needs. There are several commands, each taking up a line, that you use to break up the text file. Examples can be seen farther in the `readme.md`, or in the `testing` folder.
+The input file must be specifically formatted in order to create a specific call schedule for your needs. There are several commands, each taking up a line, that you use to break up the text file. Examples can be seen farther in the `README.md`, or in the `testing` folder.
 
 ### /defined_weekday_assignment
 
