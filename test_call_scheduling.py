@@ -10,8 +10,9 @@ start_date = datetime.date(2024, 1, 15)
 end_date = datetime.date(2025, 1, 15)
 
 call_s = CallSchedulingProblem(start_date, end_date, curr_file)
-print(len(call_s.variables))
-print(call_s.domains)
+# print(len(call_s.variables))
+# print(len(call_s.domains))
+# print(call_s.domains)
 
 result = call_s.solve_for_call_schedule(print_info=True)
 

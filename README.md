@@ -22,6 +22,7 @@ This program frames this problem as a constraint satisfaction problem, and uses 
 - Every given holiday is assigned one doctor
 - If there is not a given weekday schedule or seniority-rules, doctors will all be given an equal amount of weekdays 
 - If there are no seniority rules, doctors will all be given the same amount of weekends
+- Holidays are given the same weight as weekends, so if there are fewer holidays than doctors, the doctors with no holidays are likely to get an extra weekend
 
 These are implemented in order to create the best and fairest schedule for the doctors.
 

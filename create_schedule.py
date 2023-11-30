@@ -10,24 +10,53 @@ from CallSchedulingProblem import CallSchedulingProblem
 #                                  ^start date  ^end date
 
 if __name__ == "__main__":
+    if len(sys.argv) != 5:
+        print("Incorrect amount of parameters given. Please give a start date, end date, input filepath, "
+              "and output filepath separated by spaces.",
+              "\nIt should look like:: python create_schedule.py mm/dd/yyyy mm/dd/yyyy input_filepath output_filepath",
+              file=sys.stderr)
+        exit(1)
+
     # Get the start date (mm/dd/yyyy)
     start_date_str = str(sys.argv[1])
     date_parts = start_date_str.split("/")
-    start_date = datetime.date(int(date_parts[2]), int(date_parts[0]), int(date_parts[1]))
+    try:
+        start_date = datetime.date(int(date_parts[2]), int(date_parts[0]), int(date_parts[1]))
+    except ValueError:
+        print(f"Invalid start date format {start_date_str}. Please give it in mm/dd/yyyy format.", file=sys.stderr)
+        exit(2)
 
     # Get the end date (mm/dd/yyyy)
     end_date_str = str(sys.argv[2])
     date_parts = end_date_str.split("/")
-    end_date = datetime.date(int(date_parts[2]), int(date_parts[0]), int(date_parts[1]))
+    try:
+        end_date = datetime.date(int(date_parts[2]), int(date_parts[0]), int(date_parts[1]))
+    except ValueError:
+        print(f"Invalid start date format {end_date_str}. Please give it in mm/dd/yyyy format.", file=sys.stderr)
+        exit(3)
 
     # Get the input file
     input_filepath = str(sys.argv[3])
+    try:
+        f = open(input_filepath, "r")
+        f.close()
+    except FileNotFoundError:
+        print(f"Invalid input filepath {input_filepath}, cannot find or open file", file=sys.stderr)
+        exit(4)
 
     # Get the output file-path
     output_filepath = str(sys.argv[4])
+    try:
+        f = open(output_filepath, "w")
+        f.close()
+    except FileNotFoundError:
+        print(f"Unable to create file at {output_filepath}. The directory may not exist, or you may not have permission"
+              , file=sys.stderr)
+        exit(5)
 
     call_prob = CallSchedulingProblem(start_date, end_date, input_filepath)
     schedule = call_prob.solve_for_call_schedule()
+
     if schedule:
         call_prob.write_out_solution(schedule, output_filepath)
         weekdays, weekends, holidays = call_prob.get_doc_days_assigned(schedule)

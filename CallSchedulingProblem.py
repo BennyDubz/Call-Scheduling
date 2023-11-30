@@ -114,7 +114,7 @@ class CallSchedulingProblem(ConstraintSatisfactionProblem):
                 if inside_attempts > 5:
                     if print_info:
                         print("Locally impossible schedule. Backing out and trying again.")
-                        self.domains = copy.deepcopy(original_domains)
+                    self.domains = copy.deepcopy(original_domains)
                     new_schedule = self.local_search(1000)[0]
                     while not new_schedule:
                         new_schedule = self.local_search(1000)[0]
