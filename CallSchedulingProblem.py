@@ -3,10 +3,9 @@ import sys
 import copy
 
 from ConstraintSatisfactionProblem import ConstraintSatisfactionProblem
-import calendar
+import csv
 import datetime
 import random
-
 # Author: Ben Williams '25, benjamin.r.williams.25@dartmouth.edu
 # Date: November 5th, 2023
 
@@ -679,9 +678,17 @@ class CallSchedulingProblem(ConstraintSatisfactionProblem):
             print("Date: ", self.variables[i])
             print("Doc assigned: ", assignment[i])
 
-    # Writes out the solution week by week to a given file
     def write_out_solution(self, assignment, file_path):
-        f = open(file_path, "w")
+        # In case they do not provide a filename
+        if file_path[-1] == "/":
+            file_path += "output_schedule"
+
+        self.__write_out_txt(assignment, file_path)
+        self.__write_out_csv(assignment, file_path)
+
+    # Writes out the solution week by week as a text file
+    def __write_out_txt(self, assignment, file_path):
+        f = open(file_path + ".txt", "w")
         line = ""
         max_name_length = 0
 
@@ -695,28 +702,87 @@ class CallSchedulingProblem(ConstraintSatisfactionProblem):
                 for date in self.variables[var]:
                     # New week
                     if date.weekday() == 0:
+                        if date == self.start_date:
+                            continue
                         line += "\n"
                         f.write(line)
+                        separator_string = "-" * len(line) + "\n"
+                        f.write(separator_string)
                         line = ""
-
                     num_additional_spaces = max_name_length - len(assignment[var])
-                    line += " | " + str(date) + " : " + assignment[var] + (" " * num_additional_spaces) + " | "
+                    line += "| " + str(date) + " : " + assignment[var] + (" " * num_additional_spaces) + " |"
                 continue
 
             # New week
-            if self.variables[var].weekday() == 0:
+            if self.variables[var].weekday() == 0 and self.variables[var] != self.start_date:
                 line += "\n"
                 f.write(line)
+                separator_string = "-" * len(line) + "\n"
+                f.write(separator_string)
                 line = ""
             num_additional_spaces = max_name_length - len(assignment[var])
-            line += " | " + str(self.variables[var]) + " : " + assignment[var] + (" " * num_additional_spaces) + " | "
+            line += "| " + str(self.variables[var]) + " : " + assignment[var] + (" " * num_additional_spaces) + " |"
 
         f.write(line)
         f.close()
 
+    # Writes out the solution to a csv file
+    def __write_out_csv(self, assignment, file_path):
+        f = open(file_path + ".csv", "w")
+
+        # Create the lists for the number of weekdays/weekends/holidays assigned
+        doc_weekdays, doc_weekends, doc_holidays = self.get_doc_days_assigned(assignment)
+        day_count_csv = []
+        weekday_header = ["Doctor", "Number of Weekdays Assigned"]
+        weekend_header = ["Doctor", "Number of Weekends Assigned"]
+        holiday_header = ["Doctor", "Number of Holidays Assigned"]
+        day_count_csv.append(weekday_header)
+        for doc in doc_weekdays.keys():
+            day_count_csv.append([doc, doc_weekdays[doc]])
+        day_count_csv.append([])
+        day_count_csv.append(weekend_header)
+        for doc in doc_weekends.keys():
+            day_count_csv.append([doc, doc_weekends[doc]])
+        day_count_csv.append([])
+        day_count_csv.append(holiday_header)
+        for doc in doc_holidays.keys():
+            day_count_csv.append([doc, doc_holidays[doc]])
+        day_count_csv.append([])
+
+        # Create the lists for just the holidays
+        holiday_header = ["Holiday Date", "Doctor Assigned"]
+        holiday_csv = [holiday_header]
+        for holiday in self.holiday_indices:
+            for date in self.variables[holiday]:
+                holiday_csv.append([str(date), assignment[holiday]])
+            # So that we have a blank line in the csv between holidays
+            holiday_csv.append([])
+        holiday_csv.append([])
+
+        # Now create the lists for the full calendar
+        calendar_header = ["Date", "Doctor Assigned"]
+        csv_var_assignment = []
+        for i in range(len(assignment)):
+            if type(self.variables[i]) != tuple:
+                csv_var_assignment.append([str(self.variables[i]), assignment[i]])
+            else:
+                for date in self.variables[i]:
+                    csv_var_assignment.append([str(date), assignment[i]])
+
+        csvwriter = csv.writer(f)
+        csvwriter.writerows(day_count_csv)
+        csvwriter.writerows(holiday_csv)
+        csvwriter.writerow(calendar_header)
+        csvwriter.writerows(csv_var_assignment)
+        f.close()
+
 
 if __name__ == "__main__":
-    test_1 = CallSchedulingProblem(datetime.date(2024, 1, 15), datetime.date(2025, 1, 15), "testing/definedWeekdays")
+    test_1 = CallSchedulingProblem(datetime.date(2024, 1, 15), datetime.date(2025, 1, 15), "examples/definedWeekdays")
+    sol = test_1.solve_for_call_schedule()
+
+    # test_1.write_out_csv(sol, "./test")
+
 
     # print(test_1.weekday_schedule)
     # print(test_1.holidays)

@@ -1,11 +1,11 @@
 from CallSchedulingProblem import CallSchedulingProblem
 import datetime
 
-# Author: Ben Williams '25
+# Author: Ben Williams - benjamin.r.williams.25@dartmouth.edu
 # Date: November 6th, 2023
 
-curr_file = "testing/weekdayAvailability"
-# curr_file = "testing/definedWeekdays"
+curr_file = "examples/definedWeekdays"
+# curr_file = "examples/definedWeekdays"
 start_date = datetime.date(2024, 1, 15)
 end_date = datetime.date(2025, 1, 15)
 
@@ -22,7 +22,7 @@ print("Weekday totals:",  weekdays)
 print("Weekend totals:", weekends)
 print("Holiday totals:", holidays)
 
-call_s.write_out_solution(result, "./results/weekdayAvailability_results")
+call_s.write_out_solution(result, "example_results/defined_weekdays_results")
 
 # result_backtrack = call_s.backtracking_solver()
 # doc_count = dict()

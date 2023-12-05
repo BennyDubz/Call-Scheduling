@@ -1,6 +1,7 @@
 # Doctors/Hospital On-Call Scheduler
 ### Author: Ben Williams - benjamin.r.williams.25@dartmouth.edu
-### November 29th, 2023
+### First Published: November 29th, 2023
+### Last Updated: December 4th, 2023
 
 ## The Problem and the Purpose
 
@@ -42,12 +43,24 @@ python create_python.py start_date end_date input_filepath output_filepath
 
 Where the `start_date` and `end_date` are in `mm/dd/yyyy` format.
 
+The file formatting for the `input_file` can be found below in the `File Formatting` section.
+
+The `output_filepath` is __optional__. If it is not provided, the output will go into the current directory.
+
 Example:
 ```commandline
 python create_schedule.py 1/15/2024 1/15/2025 ./testing/definedWeekdays ./results/definedWeekdays_results
 ```
 
-### File formatting
+## Output
+
+The program will output a `.txt` and a `.csv` file in the `output_filepath` directory if it is provided, or in the current directory if it is not provided.
+
+The `.txt` file has all the assignments written week-by-week.
+
+The `.csv` file has schedule, as well as additional information about the holidays, and the number of weekdays/weekends/holidays assigned to each doctor.
+
+## File Formatting
 
 The input file must be specifically formatted in order to create a specific call schedule for your needs. There are several commands, each taking up a line, that you use to break up the text file. Examples can be seen farther in the `README.md`, or in the `testing` folder.
 
