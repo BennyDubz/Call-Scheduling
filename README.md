@@ -23,7 +23,7 @@ We frame the call scheduling as a constraint satisfaction problem, and use repea
 
 - Weekends consist of Friday, Saturday, and Sunday
 - If a doctor is on-call on Thursday, they will not be on call that weekend
-- If a doctor is on call during a weekend, they will not be on call that next monday (this and previous rule prevent four-day stretches)
+- If a doctor is on call during a weekend, they will not be on call that next monday (this and the previous rule prevent four-day stretches)
 - If a doctor is on call during a weekend, they will __not__ be on call for surrounding +/- 2 weekends
 - If a doctor is on call during a holiday, they will __not__ be on call for the surrounding +/- 2 weekends
 - Every given holiday is assigned one doctor
