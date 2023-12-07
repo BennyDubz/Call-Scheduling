@@ -49,7 +49,7 @@ The `output_filepath` is __optional__. If it is not provided, the output will go
 
 Example:
 ```commandline
-python create_schedule.py 1/15/2024 1/15/2025 ./testing/definedWeekdays ./results/definedWeekdays_results
+python create_schedule.py 1/15/2024 1/15/2025 ./examples/definedWeekdays ./example_results/defined_weekdays_results
 ```
 
 ## Output
